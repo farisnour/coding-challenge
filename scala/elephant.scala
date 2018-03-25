@@ -63,7 +63,14 @@ assert(naiveResults.contains("King!\nA") == true)
 // Replace the '???' with the implementation code. There are tests below to
 // verify your results!
 
-def parseInput(text: String): Array[String] = ???
+def parseInput(text: String): Array[String] = {
+  val punctuation = "[?!.,:]"
+
+  text.split("\\s+")                    // split on all whitespaces
+    .filterNot(_ == "")                 // remove empty results
+    .map(_.replaceAll(punctuation, "")  // remove punctuation characters
+          .toLowerCase)                 // lowercases all words
+}
 
 val betterResults = parseInput(words)
 
@@ -81,7 +88,9 @@ assert(betterResults.tail.head == "is")
 // Note that there are a number of ways to accomplish this. Both functional
 // and imperative solutions are acceptable.
 
-def getWordCount(wordArray: Array[String]) : Map[String, Int] = ???
+def getWordCount(wordArray: Array[String]) : Map[String, Int] =
+  wordArray.groupBy(identity)   // collect words into a map
+           .mapValues(_.length) // transform the values into number of occurences
 
 val wordCounts = getWordCount(parseInput(words))
 
@@ -94,8 +103,8 @@ assert(wordCounts("the") == 3)
 // Don't worry about handling edge cases here, e.g. for this purpose, we can
 // assume the map is non-empty, and there isn't a tie for most commonly
 // occurring word
-def getMostFrequentWordCount(input: Map[String, Int]): (String, Int) = ???
+def getMostFrequentWordCount(input: Map[String, Int]): (String, Int) = input.maxBy(_._2)
 
 // Fill in the values below to get the unit test passing
 // (hint: it will be a pretty common word)
-assert(getMostFrequentWordCount(wordCounts) == (???, ???))
+assert(getMostFrequentWordCount(wordCounts) == ("is", 4))
